@@ -1,0 +1,652 @@
+%% fncypart.sty
+%% Copyright 2017 Dennis den Ouden-van der Horst
+%
+% This work may be distributed and/or modified under the conditions of the LaTeX
+% Project Public License, either version 1.3 of this license or (at your option)
+% any later version. The latest version of this license is in
+%   http://www.latex-project.org/lppl.txt
+% and version 1.3 or later is part of all distributions of LaTeX version
+% 2005/12/01 or later.
+%
+% This work has the LPPL maintenance status `unmaintained'.
+%
+% This work consists of all files listed in manifest.txt.
+%
+% This work is derived from the [fncychap] package (version 1.34) by Ulf
+% Lindgren and the file and package name have been changed as requested by the
+% copyright holder of the original work:
+%
+% > Premission is granted to modify this file under the condition that it is
+% > saved using another file and package name.
+%
+% [fncychap]: https://www.ctan.org/pkg/fncychap
+
+\NeedsTeXFormat{LaTeX2e}[1995/12/01]
+\ProvidesPackage{fncypart}
+             [2007/07/30 v1.34
+                 LaTeX package (Revised chapters)]
+
+%%%% For conditional inclusion of color
+\newif\ifusecolor
+\usecolorfalse
+
+
+
+%%%% DEFINITION OF Chapapp variables
+\newcommand{\PNV}{\huge\bfseries}
+\newcommand{\PaNameVar}[1]{\renewcommand{\PNV}{#1}}
+
+
+%%%% DEFINITION OF TheChapter variables
+\newcommand{\PNoV}{\huge\bfseries}
+\newcommand{\PaNumVar}[1]{\renewcommand{\PNoV}{#1}}
+
+\newif\ifUCN
+\UCNfalse
+\newif\ifLCN
+\LCNfalse
+\def\PaNameLowerCase{\LCNtrue\UCNfalse}
+\def\PaNameUpperCase{\UCNtrue\LCNfalse}
+\def\PaNameAsIs{\UCNfalse\LCNfalse}
+
+%%%%% Fix for AMSBook 971008
+
+\@ifundefined{@partapp}{\let\@partapp\partname}{}
+
+
+%%%%% Fix for Bjarne and appendix 980211
+
+% \newif\ifinapp
+% \inappfalse
+
+%%%%% Fix for frontmatter, mainmatter, and backmatter 040920
+
+%%%%%
+
+
+
+\newcommand{\PmN}[1]{%
+\ifUCN
+   {\MakeUppercase{#1}}\LCNfalse
+\else
+   \ifLCN
+      {\MakeLowercase{#1}}\UCNfalse
+   \else #1
+   \fi
+\fi}
+
+
+%%%% DEFINITION OF Title variables
+\newcommand{\PTV}{\Huge\bfseries}
+\newcommand{\PaTitleVar}[1]{\renewcommand{\PTV}{#1}}
+
+%%%% DEFINITION OF the basic rule width
+\newlength{\PW}
+\setlength{\PW}{1pt}
+\newcommand{\PaRuleWidth}[1]{\setlength{\PW}{#1}}
+
+\newif\ifUCT
+\UCTfalse
+\newif\ifLCT
+\LCTfalse
+\def\PaTitleLowerCase{\LCTtrue\UCTfalse}
+\def\PaTitleUpperCase{\UCTtrue\LCTfalse}
+\def\PaTitleAsIs{\UCTfalse\LCTfalse}
+\newcommand{\PmTi}[1]{%
+\ifUCT
+   {\MakeUppercase{#1}}\LCTfalse
+\else
+   \ifLCT
+      {\MakeLowercase{#1}}\UCTfalse
+   \else {#1}
+   \fi
+\fi}
+
+
+
+\newlength{\mylenP}
+\newlength{\myhiP}
+\newlength{\pxP}
+\newlength{\pyP}
+\newlength{\pyPy}
+\newlength{\pxPx}
+
+
+\def\mghrulefill#1{\leavevmode\leaders\hrule\@height #1\hfill\kern\z@}
+
+\newcommand{\DOPA}{%
+  \PNV\PmN{\@partapp}\space \PNoV\thepart
+  \par\nobreak
+  \vskip 20\p@
+  }
+\newcommand{\DOTIP}[1]{%
+    \PTV\PmTi{#1}\par\nobreak
+    \vskip 40\p@
+    }
+\newcommand{\DOTIPS}[1]{%
+    \PTV\PmTi{#1}\par\nobreak
+    \vskip 40\p@
+    }
+
+%%%%%% SONNY DEF
+
+\DeclareOption{Sonny}{%
+  \PaNameVar{\Large\sf}
+  \PaNumVar{\Huge}
+  \PaTitleVar{\Large\sf}
+  \PaRuleWidth{0.5pt}
+  \PaNameUpperCase
+  \renewcommand{\DOPA}{%
+    \raggedleft
+    \PNV\PmN{\@partapp}\space \PNoV\thepart
+    \par\nobreak
+    \vskip 40\p@}
+  \renewcommand{\DOTIP}[1]{%
+    \PTV\raggedleft\mghrulefill{\PW}\par\nobreak
+    \vskip 5\p@
+    \PTV\PmTi{#1}\par\nobreak
+    \mghrulefill{\PW}\par\nobreak
+    \vskip 40\p@}
+  \renewcommand{\DOTIPS}[1]{%
+    \PTV\raggedleft\mghrulefill{\PW}\par\nobreak
+    \vskip 5\p@
+    \PTV\PmTi{#1}\par\nobreak
+    \mghrulefill{\PW}\par\nobreak
+    \vskip 40\p@}
+}
+
+%%%%%% LENNY DEF
+
+\DeclareOption{Lenny}{%
+
+  \PaNameVar{\fontsize{14}{16}\usefont{OT1}{phv}{m}{n}\selectfont}
+  \PaNumVar{\fontsize{60}{62}\usefont{OT1}{ptm}{m}{n}\selectfont}
+  \PaTitleVar{\Huge\bfseries\rm}
+  \PaRuleWidth{1pt}
+  \renewcommand{\DOPA}{%
+    \settowidth{\pxP}{\PNV\PmN{\@partapp}}
+    \addtolength{\pxP}{2pt}
+    \settoheight{\pyP}{\PNV\PmN{\@partapp}}
+    \addtolength{\pyP}{1pt}
+
+    \settowidth{\mylenP}{\PNV\PmN{\@partapp}\space\PNoV\thepart}
+    \addtolength{\mylenP}{1pt}
+    \settowidth{\pxPx}{\PNoV\thepart}
+    \addtolength{\pxPx}{-1pt}
+
+    \settoheight{\pyPy}{\PNoV\thepart}
+    \addtolength{\pyPy}{-2pt}
+    \setlength{\myhiP}{\pyPy}
+    \addtolength{\myhiP}{-1\pyP}
+    \par
+    \parbox[b]{\textwidth}{%
+    \rule[\pyP]{\PW}{\myhiP}%
+    \hskip -\PW%
+    \rule[\pyPy]{\pxP}{\PW}%
+    \hskip -\pxP%
+    \raggedright%
+    \PNV\PmN{\@partapp}\space\PNoV\thepart%
+    \hskip1pt%
+    \mghrulefill{\PW}%
+    \rule{\PW}{\pyPy}\par\nobreak%
+    \vskip -\baselineskip%
+    \vskip -\pyPy%
+    \hskip \mylenP%
+    \mghrulefill{\PW}\par\nobreak%
+    \vskip \pyPy}%
+    \vskip 20\p@}
+
+
+  \renewcommand{\DOTIP}[1]{%
+    \raggedright
+    \PTV\PmTi{#1}\par\nobreak
+    \vskip 40\p@}
+
+  \renewcommand{\DOTIPS}[1]{%
+    \raggedright
+    \PTV\PmTi{#1}\par\nobreak
+    \vskip 40\p@}
+ }
+
+%%%%%% Peter Osbornes' version of LENNY DEF
+
+\DeclareOption{PetersLenny}{%
+
+% five new lengths
+\newlength{\bl}                           %  bottom left   : orig \space
+\setlength{\bl}{6pt}
+\newcommand{\BL}[1]{\setlength{\bl}{#1}}
+\newlength{\br}                           %  bottom right  : orig 1pt
+\setlength{\br}{1pt}
+\newcommand{\BR}[1]{\setlength{\br}{#1}}
+\newlength{\tl}                           %  top left      : orig 2pt
+\setlength{\tl}{2pt}
+\newcommand{\TL}[1]{\setlength{\tl}{#1}}
+\newlength{\trr}                           %  top right      :orig 1pt
+\setlength{\trr}{1pt}
+\newcommand{\TR}[1]{\setlength{\trr}{#1}}
+\newlength{\blrule}                           %  top right      :orig 1pt
+\setlength{\trr}{0pt}
+\newcommand{\BLrule}[1]{\setlength{\blrule}{#1}}
+
+
+  \PaNameVar{\fontsize{14}{16}\usefont{OT1}{phv}{m}{n}\selectfont}
+  \PaNumVar{\fontsize{60}{62}\usefont{OT1}{ptm}{m}{n}\selectfont}
+  \PaTitleVar{\Huge\bfseries\rm}
+  \PaRuleWidth{1pt}
+\renewcommand{\DOPA}{%
+
+
+%%%%%%%                                   tweaks for 1--9 and A--Z
+\ifcase\c@part\relax%
+\or\BL{-3pt}\TL{-4pt}\BR{0pt}\TR{-6pt}%1
+\or\BL{0pt}\TL{-4pt}\BR{2pt}\TR{-4pt}%2
+\or\BL{0pt}\TL{-4pt}\BR{2pt}\TR{-4pt}%3
+\or\BL{0pt}\TL{5pt}\BR{2pt}\TR{-4pt}%4
+\or\BL{0pt}\TL{3pt}\BR{2pt}\TR{-4pt}%5
+\or\BL{-1pt}\TL{0pt}\BR{2pt}\TR{-2pt}%6
+\or\BL{0pt}\TL{-3pt}\BR{2pt}\TR{-2pt}%7
+\or\BL{0pt}\TL{-3pt}\BR{2pt}\TR{-2pt}%8
+\or\BL{0pt}\TL{-3pt}\BR{-4pt}\TR{-2pt}%9
+\or\BL{-3pt}\TL{-3pt}\BR{2pt}\TR{-7pt}%10
+\or\BL{-6pt}\TL{-6pt}\BR{0pt}\TR{-9pt}%11
+\or\BL{-6pt}\TL{-6pt}\BR{2pt}\TR{-7pt}%12
+\or\BL{-5pt}\TL{-5pt}\BR{0pt}\TR{-9pt}%13
+\or\BL{-6pt}\TL{-6pt}\BR{0pt}\TR{-9pt}%14
+\or\BL{-3pt}\TL{-3pt}\BR{3pt}\TR{-6pt}%15
+\or\BL{-3pt}\TL{-3pt}\BR{3pt}\TR{-6pt}%16
+\or\BL{-5pt}\TL{-3pt}\BR{-8pt}\TR{-6pt}%17
+\or\BL{-5pt}\TL{-5pt}\BR{0pt}\TR{-9pt}%18
+\or\BL{-3pt}\TL{-3pt}\BR{-6pt}\TR{-9pt}%19
+\or\BL{0pt}\TL{0pt}\BR{0pt}\TR{-5pt}%20
+\fi
+
+\ifinapp\ifcase\c@part\relax%
+\or\BL{0pt}\TL{14pt}\BR{5pt}\TR{-19pt}%A
+\or\BL{0pt}\TL{-5pt}\BR{-3pt}\TR{-8pt}%B
+\or\BL{-3pt}\TL{-2pt}\BR{1pt}\TR{-6pt}\BLrule{0pt}%C
+\or\BL{0pt}\TL{-5pt}\BR{-3pt}\TR{-8pt}\BLrule{0pt}%D
+\or\BL{0pt}\TL{-5pt}\BR{2pt}\TR{-3pt}%E
+\or\BL{0pt}\TL{-5pt}\BR{-10pt}\TR{-1pt}%F
+\or\BL{-3pt}\TL{0pt}\BR{0pt}\TR{-7pt}%G
+\or\BL{0pt}\TL{-5pt}\BR{3pt}\TR{-1pt}%H
+\or\BL{0pt}\TL{-5pt}\BR{3pt}\TR{-1pt}%I
+\or\BL{2pt}\TL{0pt}\BR{-3pt}\TR{1pt}%J
+\or\BL{0pt}\TL{-5pt}\BR{3pt}\TR{-1pt}%K
+\or\BL{0pt}\TL{-5pt}\BR{2pt}\TR{-19pt}%L
+\or\BL{0pt}\TL{-5pt}\BR{3pt}\TR{-1pt}%M
+\or\BL{0pt}\TL{-5pt}\BR{-2pt}\TR{-1pt}%N
+\or\BL{-3pt}\TL{-2pt}\BR{-3pt}\TR{-11pt}%O
+\or\BL{0pt}\TL{-5pt}\BR{-9pt}\TR{-3pt}%P
+\or\BL{-3pt}\TL{-2pt}\BR{-3pt}\TR{-11pt}%Q
+\or\BL{0pt}\TL{-5pt}\BR{4pt}\TR{-8pt}%R
+\or\BL{-2pt}\TL{-2pt}\BR{-2pt}\TR{-7pt}%S
+\or\BL{-3pt}\TL{0pt}\BR{-5pt}\TR{4pt}\BLrule{8pt}%T
+\or\BL{-7pt}\TL{-11pt}\BR{-5pt}\TR{-7pt}\BLrule{0pt}%U
+\or\BL{-14pt}\TL{-5pt}\BR{-14pt}\TR{-1pt}\BLrule{14pt}%V
+\or\BL{-10pt}\TL{-9pt}\BR{-13pt}\TR{-3pt}\BLrule{7pt}%W
+\or\BL{0pt}\TL{-5pt}\BR{3pt}\TR{-1pt}\BLrule{0pt}%X
+\or\BL{-6pt}\TL{-4pt}\BR{-7pt}\TR{1pt}\BLrule{7pt}%Y
+\or\BL{0pt}\TL{-5pt}\BR{3pt}\TR{-1pt}\BLrule{0pt}%Z
+\fi\fi
+%%%%%%%
+    \settowidth{\pxP}{\PNV\PmN{\@partapp}}
+    \addtolength{\pxP}{\tl}        %MOD change 2pt to \tl
+    \settoheight{\pyP}{\PNV\PmN{\@partapp}}
+    \addtolength{\pyP}{1pt}
+
+    \settowidth{\mylenP}{\PNV\PmN{\@partapp}\space\PNoV\thepart}
+    \addtolength{\mylenP}{\trr}% MOD change 1pt to \tr
+    \settowidth{\pxPx}{\PNoV\thepart}
+    \addtolength{\pxPx}{-1pt}
+
+    \settoheight{\pyPy}{\PNoV\thepart}
+    \addtolength{\pyPy}{-2pt}
+    \setlength{\myhiP}{\pyPy}
+    \addtolength{\myhiP}{-1\pyP}
+    \par
+    \parbox[b]{\textwidth}{%
+    \rule[\pyP]{\PW}{\myhiP}%
+    \hskip -\PW%
+    \rule[\pyPy]{\pxP}{\PW}%
+    \hskip -\pxP%
+    \raggedright%
+    \PNV\PmN{\@partapp}\rule{\blrule}{\PW}\hskip\bl\PNoV\thepart%MOD
+%    \PNV\PmN{\@partapp}\space\PNoV\thepart                     %ORIGINAL
+    \hskip\br%                           %MOD 1pt to \br
+    \mghrulefill{\PW}%
+    \rule{\PW}{\pyPy}\par\nobreak%
+    \vskip -\baselineskip%
+    \vskip -\pyPy%
+    \hskip \mylenP%
+    \mghrulefill{\PW}\par\nobreak%
+    \vskip \pyPy}%
+    \vskip 20\p@}
+
+
+  \renewcommand{\DOTIP}[1]{%
+    \raggedright
+    \PTV\PmTi{#1}\par\nobreak
+    \vskip 40\p@}
+
+  \renewcommand{\DOTIPS}[1]{%
+    \raggedright
+    \PTV\PmTi{#1}\par\nobreak
+    \vskip 40\p@}
+ }
+
+
+%
+
+
+%%%%%% BJORNSTRUP DEF
+
+\DeclareOption{Bjornstrup}{%
+  \usecolortrue
+  % pzc (Zapf Chancelery) is nice.  ppl (Palatino) is cool too.
+  \PaNumVar{\fontsize{76}{80}\usefont{OT1}{pzc}{m}{n}\selectfont}
+  \PaTitleVar{\raggedleft\Large\sffamily\bfseries}
+
+  \setlength{\myhiP}{10pt}         % Space between grey box border and text
+  \setlength{\mylenP}{\textwidth}
+  \addtolength{\mylenP}{-2\myhiP}
+  \renewcommand{\DOPA}{%
+    \settowidth{\pyP}{\PNoV\thepart}
+    \addtolength{\pyP}{-10pt}      % Amount of space by which the
+%                                  % number is shifted right
+    \fboxsep=0pt%
+    \colorbox[gray]{.85}{\rule{0pt}{40pt}\parbox[b]{\textwidth}{\hfill}}%
+    \kern-\pyP\raise20pt%
+    \hbox{\color[gray]{.5}\PNoV\thepart}\\%
+  }
+
+  \renewcommand{\DOTIP}[1]{%
+    \nointerlineskip\raggedright%
+    \fboxsep=\myhiP%
+    \vskip-1ex%
+    \colorbox[gray]{.85}{\parbox[t]{\mylenP}{\PTV\PmTi{#1}}}\par\nobreak%
+    \vskip 40\p@%
+  }
+
+  \renewcommand{\DOTIPS}[1]{%
+    \fboxsep=0pt
+    \colorbox[gray]{.85}{\rule{0pt}{40pt}\parbox[b]{\textwidth}{\hfill}}\\%
+    \nointerlineskip\raggedright%
+    \fboxsep=\myhiP%
+    \colorbox[gray]{.85}{\parbox[t]{\mylenP}{\PTV\PmTi{#1}}}\par\nobreak%
+    \vskip 40\p@%
+  }
+}
+
+
+%%%%%%% GLENN DEF
+
+
+\DeclareOption{Glenn}{%
+  \PaNameVar{\bfseries\Large\sf}
+  \PaNumVar{\Huge}
+  \PaTitleVar{\bfseries\Large\rm}
+  \PaRuleWidth{1pt}
+  \PaNameUpperCase
+  \PaTitleUpperCase
+  \renewcommand{\DOPA}{%
+    \settoheight{\myhiP}{\PTV\PmTi{Test}}
+    \setlength{\pyP}{\baselineskip}
+    \addtolength{\pyP}{\PW}
+    \addtolength{\pyP}{\myhiP}
+    \setlength{\pyPy}{\pyP}
+    \addtolength{\pyPy}{-1\PW}
+
+    \raggedright
+    \PNV\PmN{\@partapp}\space\PNoV\thepart
+    \hskip 3pt\mghrulefill{\PW}\rule[-1\pyPy]{2\PW}{\pyP}\par\nobreak}
+
+  \renewcommand{\DOTIP}[1]{%
+    \addtolength{\pyPy}{-4pt}
+    \settoheight{\myhiP}{\PTV\PmTi{#1}}
+    \addtolength{\myhiP}{\pyP}
+    \addtolength{\myhiP}{-1\PW}
+    \vskip -1\pyPy
+    \rule{2\PW}{\myhiP}\mghrulefill{\PW}\hskip 2pt
+    \raggedleft\PTV\PmTi{#1}\par\nobreak
+    \vskip 80\p@}
+
+% \newlength{\backskip}
+  \renewcommand{\DOTIPS}[1]{%
+%    \setlength{\pyP}{10pt}
+%    \setlength{\pyPy}{\pyP}
+%    \addtolength{\pyPy}{\PW}
+%    \setlength{\myhiP}{\baselineskip}
+%    \addtolength{\myhiP}{\pyPy}
+%    \mghrulefill{\PW}\rule[-1\pyP]{2\PW}{\pyPy}\par\nobreak
+%    \addtolength{}{}
+%\vskip -1\baselineskip
+%    \rule{2\PW}{\myhiP}\mghrulefill{\PW}\hskip 2pt
+%    \raggedleft\PTV\PmTi{#1}\par\nobreak
+%    \vskip 60\p@}
+%% Fix suggested by Tomas Lundberg
+    \setlength{\pyP}{25pt}  % eller vad man vill
+    \setlength{\pyPy}{\pyP}
+    \setlength{\backskip}{\pyP}
+    \addtolength{\backskip}{2pt}
+    \addtolength{\pyPy}{\PW}
+    \setlength{\myhiP}{\baselineskip}
+    \addtolength{\myhiP}{\pyPy}
+    \mghrulefill{\PW}\rule[-1\pyP]{2\PW}{\pyPy}\par\nobreak
+    \vskip -1\backskip
+    \rule{2\PW}{\myhiP}\mghrulefill{\PW}\hskip 3pt %
+    \raggedleft\PTV\PmTi{#1}\par\nobreak
+    \vskip 40\p@}
+ }
+
+%%%%%%% CONNY DEF
+
+\DeclareOption{Conny}{%
+  \PaNameUpperCase
+  \PaTitleUpperCase
+  \PaNameVar{\centering\Huge\rm\bfseries}
+  \PaNumVar{\Huge}
+  \PaTitleVar{\centering\Huge\rm}
+  \PaRuleWidth{2pt}
+
+  \renewcommand{\DOPA}{%
+    \mghrulefill{3\PW}\par\nobreak
+    \vskip -0.5\baselineskip
+    \mghrulefill{\PW}\par\nobreak
+    \PNV\PmN{\@partapp}\space \PNoV\thepart
+    \par\nobreak
+    \vskip -0.5\baselineskip
+   }
+  \renewcommand{\DOTIP}[1]{%
+    \mghrulefill{\PW}\par\nobreak
+    \PTV\PmTi{#1}\par\nobreak
+    \vskip 60\p@
+    }
+  \renewcommand{\DOTIPS}[1]{%
+    \mghrulefill{\PW}\par\nobreak
+    \PTV\PmTi{#1}\par\nobreak
+    \vskip 60\p@
+    }
+  }
+
+%%%%%%% REJNE DEF
+
+\DeclareOption{Rejne}{%
+
+  \PaNameUpperCase
+  \PaTitleUpperCase
+  \PaNameVar{\centering\Large\rm}
+  \PaNumVar{\Huge}
+  \PaTitleVar{\centering\Huge\rm}
+  \PaRuleWidth{1pt}
+  \renewcommand{\DOPA}{%
+    \settoheight{\pyP}{\PNoV\thepart}
+    \parskip=0pt plus 1pt % Set parskip to default, just in case v1.31
+    \addtolength{\pyP}{-1pt}
+    \PNV\PmN{\@partapp}\par\nobreak
+    \vskip 20\p@
+    \setlength{\myhiP}{2\baselineskip}
+    \setlength{\pxP}{\myhiP}
+    \addtolength{\pxP}{-1\PW}
+    \rule[-1\pxP]{\PW}{\myhiP}\mghrulefill{\PW}\hskip
+    10pt\raisebox{-0.5\pyP}{\PNoV\thepart}\hskip 10pt\mghrulefill{\PW}\rule[-1\pxP]{\PW}{\myhiP}\par\nobreak
+     \vskip -3\p@% Added -2pt vskip to correct for streched text v1.31
+    }
+  \renewcommand{\DOTIP}[1]{%
+    \setlength{\mylenP}{\textwidth}
+    \parskip=0pt plus 1pt % Set parskip to default, just in case v1.31
+    \addtolength{\mylenP}{-2\PW}
+    {\vrule width\PW}\parbox{\mylenP}{\PTV\PmTi{#1}}{\vrule width\PW}\par\nobreak%
+    \vskip -3pt\rule{\PW}{2\baselineskip}\mghrulefill{\PW}\rule{\PW}{2\baselineskip}%
+    \vskip 60\p@% Added -2pt in vskip to correct for streched text v1.31
+    }
+  \renewcommand{\DOTIPS}[1]{%
+    \setlength{\pyP}{\fboxrule}
+    \setlength{\fboxrule}{\PW}
+    \setlength{\mylenP}{\textwidth}
+    \addtolength{\mylenP}{-2\PW}
+    \fbox{\parbox{\mylenP}{\vskip 2\baselineskip\PTV\PmTi{#1}\par\nobreak\vskip \baselineskip}}
+    \setlength{\fboxrule}{\pyP}
+    \vskip 60\p@
+    }
+  }
+
+
+%%%%%%% BJARNE DEF
+
+\DeclareOption{Bjarne}{%
+  \PaNameUpperCase
+  \PaTitleUpperCase
+  \PaNameVar{\raggedleft\normalsize\rm}
+  \PaNumVar{\raggedleft \bfseries\Large}
+  \PaTitleVar{\raggedleft \Large\rm}
+  \PaRuleWidth{1pt}
+
+
+%% Note thepart -> c@chapter fix appendix bug
+%% Fixed misspelled 12
+
+  \newcounter{AlphaCnt}
+  \newcounter{AlphaDecCnt}
+  \newcommand{\AlphaNo}{%
+    \ifcase\number\theAlphaCnt
+      \ifnum\c@part=0
+        ZERO\else{}\fi
+    \or ONE\or TWO\or THREE\or FOUR\or FIVE
+    \or SIX\or SEVEN\or EIGHT\or NINE\or TEN
+    \or ELEVEN\or TWELVE\or THIRTEEN\or FOURTEEN\or FIFTEEN
+    \or SIXTEEN\or SEVENTEEN\or EIGHTEEN\or NINETEEN\fi
+}
+
+  \newcommand{\AlphaDecNo}{%
+    \setcounter{AlphaDecCnt}{0}
+    \@whilenum\number\theAlphaCnt>0\do
+      {\addtocounter{AlphaCnt}{-10}
+       \addtocounter{AlphaDecCnt}{1}}
+     \ifnum\number\theAlphaCnt=0
+     \else
+       \addtocounter{AlphaDecCnt}{-1}
+       \addtocounter{AlphaCnt}{10}
+     \fi
+
+
+    \ifcase\number\theAlphaDecCnt\or TEN\or TWENTY\or THIRTY\or
+    FORTY\or FIFTY\or SIXTY\or SEVENTY\or EIGHTY\or NINETY\fi
+    }
+  \newcommand{\TheAlphaChapter}{%
+
+    \ifinapp
+      \thepart
+    \else
+      \setcounter{AlphaCnt}{\c@part}
+      \ifnum\c@part<20
+        \AlphaNo
+      \else
+        \AlphaDecNo\AlphaNo
+      \fi
+    \fi
+    }
+  \renewcommand{\DOPA}{%
+    \mghrulefill{\PW}\par\nobreak
+    \PNV\PmN{\@partapp}\par\nobreak
+    \PNoV\TheAlphaChapter\par\nobreak
+    \vskip -1\baselineskip\vskip 5pt\mghrulefill{\PW}\par\nobreak
+    \vskip 20\p@
+    }
+  \renewcommand{\DOTIP}[1]{%
+    \PTV\PmTi{#1}\par\nobreak
+    \vskip 40\p@
+    }
+  \renewcommand{\DOTIPS}[1]{%
+    \PTV\PmTi{#1}\par\nobreak
+    \vskip 40\p@
+    }
+}
+
+\DeclareOption*{%
+  \PackageWarning{fancypart}{unknown style option}
+  }
+
+\ProcessOptions* \relax
+
+\ifusecolor
+  \RequirePackage{color}
+\fi
+
+\def\@part[#1]#2{%
+\ifnum \c@secnumdepth >-2\relax
+  \refstepcounter{part}%
+  \addcontentsline{toc}{part}{\thepart\hspace{1em}#1}%
+\else
+  \addcontentsline{toc}{part}{#1}%
+\fi
+\markboth{}{}%
+\thispagestyle{empty}
+  {\parindent \z@ \raggedright \normalfont
+    \ifnum \c@secnumdepth >\m@ne
+      \if@mainmatter%%%%% Fix for frontmatter, mainmatter, and backmatter 040920
+        \DOPA
+      \fi
+    \fi
+    \interlinepenalty\@M
+    \if@mainmatter%%%%% Fix for frontmatter, mainmatter, and backmatter 060424
+      \DOTIP{#2}%
+    \else%
+      \DOTIPS{#2}%
+    \fi
+}%
+\@endpart}
+
+%%% Begin: To avoid problem with scrbook.cls (fncychap version 1.32)
+
+%%OUT:
+%\def\@schapter#1{\if@twocolumn
+%                   \@topnewpage[\@makeschapterhead{#1}]%
+%                 \else
+%                   \@makeschapterhead{#1}%
+%                   \@afterheading
+%                 \fi}
+
+%%IN:
+\def\@spartr#1{%
+\if@twocolumn%
+  \@makesparthead{#1}%
+\else%
+  \@makesparthead{#1}%
+  \@afterheading%
+\fi}
+
+%%% End: To avoid problem with scrbook.cls (fncychap version 1.32)
+
+\def\@makesparthead#1{%
+  \vspace*{50\p@}%
+  {\parindent \z@ \raggedright
+    \normalfont
+    \interlinepenalty\@M
+    \DOTIPS{#1}
+    \vskip 40\p@
+  }}
+
+\endinput
+
+

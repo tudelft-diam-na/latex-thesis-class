@@ -1,0 +1,103 @@
+%% titlepage.tex
+%% Copyright 2017 Dennis den Ouden-van der Horst
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.3
+% of this license or (at your option) any later version.
+% The latest version of this license is in
+%   http://www.latex-project.org/lppl.txt
+% and version 1.3 or later is part of all distributions of LaTeX
+% version 2005/12/01 or later.
+%
+% This work has the LPPL maintenance status `unmaintained'.
+%
+% This work consists of all files listed in manifest.txt.
+%
+\begin{titlepage}
+\null\vfil
+\begin{center}%
+   \vskip 11em
+   {\LARGE \makeatletter\@title\makeatother%
+\ifthenelse{\equal{\SubTitle}{.}}%
+{}%
+{%else gedeelte
+ :\\ {\SubTitle}
+}%
+}
+   \vskip 6em
+   {\large PROEFSCHRIFT}
+   \\ \vskip 3em
+   ter verkrijging van de graad van doctor \\
+   aan de Technische Universiteit Delft, \\
+   op gezag van de Rector Magnificus prof.ir. K.C.A.M. Luyben, \\
+   voorzitter van het College voor Promoties,\\
+   in het openbaar te verdedigen op\\
+\selectlanguage{dutch}
+   \longdate{\dutchdate\DefenceDate}~om~\DefenceTime~uur\\
+\selectlanguage{english}
+   \vskip 3em
+   door \\
+   \vskip 5em
+   {\Large \FirstName~\MakeUppercase{\LastName}} \\
+   \AcademicTitle\\
+   \vskip 2em
+   geboren te \BirthPlace
+\par
+% \vskip 1.5em
+\end{center}
+\vfil\null
+\end{titlepage}
+\thispagestyle{empty}
+\noindent Dit proefschrift is goedgekeurd door de promotor\SecondPromotor \\
+\noindent \Promotor
+\vskip 1em
+\ifthenelse{\equal{\CoPromotor}{.}}%
+{}%
+{%else gedeelte
+  \noindent Copromotor \CoPromotor \vskip 1em%
+}
+\noindent Samenstelling promotiecommissie: \vskip 1em
+\noindent\hspace{-1em}
+\begin{tabular}{l l}
+\Committee
+\end{tabular}
+
+\vskip 1em
+
+\SuperVisor
+
+\vspace{\stretch{1}}
+
+% \noindent \makeatletter\mbox{\@title}\makeatother
+\noindent \parbox[b]{\textwidth}{\patchtitle
+\ifthenelse{\equal{\SubTitle}{.}}%
+{}%
+{%else gedeelte
+ : \SubTitle
+}}\\%
+Dissertation at Delft University of Technology.\\
+Copyright $\copyright$ \the\year~by \Initials~\LastName\vskip 1.5em
+\ifthenelse{\equal{\Logo}{.}}%
+{}%
+{%else gedeelte
+\noindent \includegraphics[height=10mm]{\Logo} \\
+}
+\ifthenelse{\equal{\ExtraText}{.}}%
+{}%
+{%else gedeelte
+\noindent \ExtraText}%
+\vskip 0em
+\noindent ISBN \ISBN \\
+~\\
+\ifthenelse{\equal{\Printer}{.}}%
+{}%
+{%else gedeelte
+\noindent Printed by: \Printer
+}
+
+\ifthenelse{\equal{\Publisher}{.}}%
+{}%
+{%else gedeelte
+\noindent Published by: \Publisher
+}
+\pagebreak

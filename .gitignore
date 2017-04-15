@@ -1,0 +1,6 @@
+example.*
+!example.tex
+!example.bib
+phantombib.*
+titlepage.*
+!titlepage.tex
